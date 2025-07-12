@@ -5,8 +5,14 @@ import com.duowngtora.spring_ai_gemini.service.dto.ChatMessageReqDto;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.content.Media;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Objects;
 
 @Service
 public class ChatServiceImpl implements IChatService {
@@ -28,5 +34,28 @@ public class ChatServiceImpl implements IChatService {
         UserMessage userMessage = new UserMessage(chatMessageReqDto.message());
         Prompt prompt = new Prompt(systemMessage, userMessage);
         return this.chatClient.prompt(prompt).call().content();
+    }
+
+    @Override
+    public String chatWithFile(MultipartFile file, String message) {
+        Media media = Media.builder()
+                .mimeType(MimeTypeUtils.parseMimeType(Objects.requireNonNull(file.getContentType())))
+                .data(file.getResource())
+                .build();
+
+        // cấu hình mức độ sáng tạo của AI (giá trị từ 0 -> 1: càng thấp thì sáng tạo càng ít càng chính xác)
+        ChatOptions chatOptions = ChatOptions.builder()
+                .temperature(0.1D)
+                .build();
+
+        return this.chatClient.prompt()
+                .options(chatOptions)
+                .system("""
+                        Bạn là DuowngTora
+                        """)
+                .user(promptUserSpec ->
+                        promptUserSpec.media(media)
+                                .text(message))
+                .call().content();
     }
 }
