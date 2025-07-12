@@ -1,7 +1,7 @@
 package com.duowngtora.spring_ai_gemini.controller;
 
 import com.duowngtora.spring_ai_gemini.service.IChatService;
-import com.duowngtora.spring_ai_gemini.service.dto.ChatMessageReqDto;
+import com.duowngtora.spring_ai_gemini.service.dto.request.ChatMessageReqDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
