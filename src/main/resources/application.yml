@@ -1,6 +1,15 @@
 spring:
   application:
     name: spring-ai-gemini
+  datasource:
+    url: jdbc:postgresql://192.168.1.145:5433/spring_ai?currentSchema=dev
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   ai:
     openai:
       api-key: ${GEMINI_API_KEY}
@@ -10,6 +19,10 @@ spring:
         options:
           model: gemini-2.0-flash
           temperature: 0.1
-
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
 server:
   port: 8091

@@ -1,4 +1,6 @@
 package com.duowngtora.spring_ai_gemini.service.dto.request;
 
-public record ChatMessageReqDto(String message) {
+import java.util.UUID;
+
+public record ChatMessageReqDto(String message, UUID conversationId) {
 }

@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db16:
+    container_name: postgresql16-db
+    image: postgres:16.4-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5433:5432'
+    volumes:
+      - db16:/var/lib/postgresql/data
+volumes:
+  db16:
+    driver: local
